@@ -7,7 +7,7 @@ export async function sendTransfer(req) {
     let response;
     const recipientWallet = await findWalletByUserIdentifierAndParticipantName(toIdentifier, toAppName);
     const participant = await findParticipantByAppName(toAppName);
-    const issuingWallet = await findWalletByUserIdentifierAndParticipantName(fromIdentifier, toAppName === 'LUCA' ? 'LUCA' : 'PIXEL MONEY');
+    const issuingWallet = await findWalletByUserIdentifierAndParticipantName(fromIdentifier, toAppName === 'LUCA' ? 'PIXEL MONEY': 'LUCA');
 
     if (!participant) {
         throw new ApiError(404, 'Participante no encontrado', [
@@ -20,6 +20,10 @@ export async function sendTransfer(req) {
             { atribute: 'toIdentifier', message: `En ${toAppName} no existe un usuario con el número ${toIdentifier}` }
         ]);
     }
+
+    console.log('Participant: ', participant);
+    console.log('Recipient Wallet: ', recipientWallet);
+    console.log('Issuing Wallet: ', issuingWallet);
 
     const { webhook_url, token, app_name } = participant;
 
