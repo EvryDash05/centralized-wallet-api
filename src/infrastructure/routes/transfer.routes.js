@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { authMiddleware } from "../auth/middlewares/authMidleware.js";
 import { sendTransferController } from "../controllers/transferController.js";
+import { validateRequest } from "../middlewares/requestMiddleware.js";
+import { sendNewTransferSchema } from "../models/request/transferRequest.js";
 
 const transferRouter = Router();
 /**
@@ -36,6 +38,10 @@ const transferRouter = Router();
  *             schema:
  *               $ref: '#/components/schemas/ApiResponse'
  */
-transferRouter.post("/sendTransfer", authMiddleware, sendTransferController);
+transferRouter.post(
+    "/sendTransfer", 
+    [authMiddleware, validateRequest(sendNewTransferSchema)], 
+    sendTransferController
+);
 
 export default transferRouter;

@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { authMiddleware } from '../auth/middlewares/authMidleware.js';
-import { createWalletController, getWalletByIdentifierUser } from '../controllers/wallterController.js';
+import { createWalletController, getAllWalletsByUserIdentifierController, getWalletByIdentifierUser } from '../controllers/walletController.js';
+import { validateRequest } from '../middlewares/requestMiddleware.js';
+import { registerWalletSchema } from '../models/request/registerNewWalletRequest.js';
 
 const walletRouter = Router();
 /**
@@ -103,14 +105,14 @@ const walletRouter = Router();
  *                 type: string
  *               appName:
  *                 type: string
- *               examples:
- *                 registerWalletExample:
- *                   summary: Ejemplo de body para registrar wallet
- *                   value:
- *                     userIdentifier: "999344882"
- *                     internalWalletId: 3
- *                     userName: "Juan Pérez"
- *                     appName: "LUCA"
+ *             examples:
+ *               registerWalletExample:
+ *                 summary: Ejemplo de body para registrar wallet
+ *                 value:
+ *                   userIdentifier: "999344882"
+ *                   internalWalletId: 3
+ *                   userName: "Juan Pérez"
+ *                   appName: "LUCA"
  *     responses:
  *       '200':
  *         description: Wallet creada/registrada
@@ -119,7 +121,11 @@ const walletRouter = Router();
  *             schema:
  *               $ref: '#/components/schemas/ApiResponse'
  */
-walletRouter.post('/register-wallet', authMiddleware, createWalletController);
+walletRouter.post(
+    '/register-wallet', 
+    [authMiddleware, validateRequest(registerWalletSchema)], 
+    createWalletController
+);
 
 /**
  * @openapi
@@ -153,5 +159,32 @@ walletRouter.post('/register-wallet', authMiddleware, createWalletController);
  *               $ref: '#/components/schemas/ApiResponse'
  */
 walletRouter.get('/wallet/:id/:appName', authMiddleware, getWalletByIdentifierUser);
+
+/**
+ * @openapi
+ * /wallets/{userIdentifier}:
+ *   get:
+ *     tags:
+ *       - Wallet
+ *     summary: Obtiene las wallets por identificador de usuario
+ *     security:
+ *       - WalletToken: []
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userIdentifier
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Identificador del usuario (userIdentifier)
+ *     responses:
+ *       '200':
+ *         description: Wallet encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ApiResponse'
+ */
+walletRouter.get('/wallets/:userIdentifier', authMiddleware, getAllWalletsByUserIdentifierController);
 
 export default walletRouter;

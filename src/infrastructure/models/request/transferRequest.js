@@ -1,10 +1,9 @@
 import z from "zod";
-
-const ALLOWED_APP_NAMES = ["LUCA", "PLAY MONEY"];
+import { ALLOWED_APP_NAMES } from "../../utils/constants.js";
 
 export const sendNewTransferSchema = z.object({
     fromIdentifier: z.string()
-        .min(9, "El identificador del emisor debe tener al menos 9 caracteres") // número de teléfono
+        .min(9, "El identificador del emisor debe tener al menos 9 caracteres")
         .max(15, "El identificador del emisor debe tener máximo 15 caracteres"),
     toIdentifier: z.string()
         .min(9, "El identificador del destinatario debe tener al menos 9 caracteres")

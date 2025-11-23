@@ -1,16 +1,7 @@
 import { ApiError } from "../infrastructure/exceptions/ApiError.js";
-import { sendNewTransferSchema } from "../infrastructure/models/request/transferRequest.js";
 import { findWalletByUserIdentifierAndParticipantName } from "../infrastructure/repository/walletRepository.js";
-import { buildErrorRequest } from "../infrastructure/utils/httpUtils.js";
 
 export async function sendTransfer(req) {
-
-    const parsed = sendNewTransferSchema.safeParse(req.body);
-
-    if (!parsed.success) {
-        buildErrorRequest(parsed);
-    }
-
     const { toIdentifier, toAppName } = req.body;
     const { webhook_url, token } = req.participant;
 
@@ -18,7 +9,7 @@ export async function sendTransfer(req) {
 
     if (!wallet) {
         throw new ApiError(404, 'Billetera no encontrada', [
-            { atribute: 'toIdentifier', message: `No se encontró una billetera para el identificador de usuario proporcionado ${toIdentifier}` }
+            { atribute: 'toIdentifier', message: `En ${toAppName} no existe un usuario con el número ${toIdentifier}` }
         ]);
     }
 

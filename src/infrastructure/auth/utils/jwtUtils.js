@@ -13,11 +13,8 @@ export async function verifyToken(token, walletToken) {
     try {
         const digitalSignature = walletToken === process.env.LUCA_TOKEN ?
             process.env.LUCA_TOKEN_SIGNATURE : 
-            process.env.PLAY_MONEY_SIGNATURE;
+            process.env.PIXEL_MONEY_SIGNATURE;
 
-        console.log('token:', token);
-        console.log('walletToken:', walletToken);
-        console.log('digitalSignature:', digitalSignature);
         const { payload } = await jwtVerify(token, new TextEncoder().encode(digitalSignature));
         return payload;
     } catch (error) {

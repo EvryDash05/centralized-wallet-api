@@ -1,5 +1,5 @@
 import { ApiError } from "../infrastructure/exceptions/ApiError.js";
-import { findWalletByUserIdentifierAndParticipantName, registerWallet } from "../infrastructure/repository/walletRepository.js";
+import { findAllWalletsByUserIdentifier, findWalletByUserIdentifierAndParticipantName, registerWallet } from "../infrastructure/repository/walletRepository.js";
 
 export async function createWallet(request) {
     const { userIdentifier, internalWalletId, userName, appName } = request;
@@ -33,12 +33,29 @@ export async function getWalletById(walletId, appName) {
     }
 }
 
+export async function getAllWalletsByUserIdentifier(userIdentifier) {
+    const response = await findAllWalletsByUserIdentifier(userIdentifier);
+
+    if (response.lenght === 0) {
+        throw new ApiError(404, 'No se encontraron billeteras', { message: 'El usuario no tiene billeteras registradas' });
+    }
+
+    const wallets = response.map(mapToWalletResponse);
+
+    return {
+        code: 200,
+        message: 'Billeteras encontradas exitosamente',
+        data: wallets
+    };
+}
+
+
 function mapToWalletResponse(dbRecord) {
     return {
         id: dbRecord.id,
         userIdentifier: dbRecord.user_identifier,
         internalWalletId: dbRecord.internal_wallet_id,
         userName: dbRecord.user_name,
-        participantId: dbRecord.participant_id === 'db41c15f-e4df-4647-87c9-eb55d6578774' ? 'LUCA' : 'PLAY MONEY',
+        appName: dbRecord.app_name,
     };
 }

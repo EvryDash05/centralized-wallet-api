@@ -1,9 +1,0 @@
-
-
-
-async function registerTransferLog(params) {
-
-
-
-}
-
