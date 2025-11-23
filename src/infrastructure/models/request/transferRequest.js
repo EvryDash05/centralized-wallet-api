@@ -16,5 +16,8 @@ export const sendNewTransferSchema = z.object({
         .positive("El valor debe ser mayor que 0")
         .refine(val => Number(val.toFixed(2)) === val, {
             message: "El valor debe tener como máximo 2 decimales"
-        })
+        }),
+    externalTransactionId: z.string()
+        .min(1, "El ID de transacción externa no puede estar vacío")
+        .max(100, "El ID de transacción externa debe tener como máximo 100 caracteres")
 });

@@ -29,7 +29,7 @@ const transferRouter = Router();
  *                 toIdentifier: "999344889"
  *                 toAppName: "PLAY MONEY"
  *                 amount: 150.75
- *                 description: "Pago por servicios de consultoría"
+ *                 externalTransactionId: "TX123456789"   
  *     responses:
  *       '200':
  *         description: Transferencia procesada
