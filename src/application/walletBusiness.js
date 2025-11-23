@@ -2,9 +2,9 @@ import { ApiError } from "../infrastructure/exceptions/ApiError.js";
 import { findWalletByUserIdentifierAndParticipantName, registerWallet } from "../infrastructure/repository/walletRepository.js";
 
 export async function createWallet(request) {
-    const { userIdentifier, internalWalletId, userName, participantId } = request;
+    const { userIdentifier, internalWalletId, userName, appName } = request;
 
-    await registerWallet({ userIdentifier, internalWalletId, userName, participantId });
+    await registerWallet({ userIdentifier, internalWalletId, userName, appName });
 
     return {
         code: 201,
