@@ -1,5 +1,5 @@
-import { ApiError } from "../infrastructure/exceptions/ApiError";
-import { registerTransactionLog } from "../infrastructure/repository/transactionLogRepository";
+import { ApiError } from "../infrastructure/exceptions/ApiError.js";
+import { registerTransactionLog } from "../infrastructure/repository/transactionLogRepository.js";
 
 export async function createTransactionLog(request) {
     const response = await registerTransactionLog(request);
