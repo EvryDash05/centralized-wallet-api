@@ -1,5 +1,5 @@
 import { ApiError } from "../infrastructure/exceptions/ApiError.js";
-import { findWalletByUserIdentifier, registerWallet } from "../infrastructure/repository/walletRepository.js";
+import { findWalletByUserIdentifier, findWalletByUserIdentifierAndParticipantName, registerWallet } from "../infrastructure/repository/walletRepository.js";
 
 export async function createWallet(request) {
     const { userIdentifier, internalWalletId, userName, participantId } = request;
@@ -12,13 +12,13 @@ export async function createWallet(request) {
     };
 }
 
-export async function getWalletById(walletId) {
+export async function getWalletById(walletId, appName) {
 
     if (isNaN(walletId)) {
         throw new ApiError(400, 'Invalid wallet ID');
     }
 
-    const response = await findWalletByUserIdentifier(walletId);
+    const response = await findWalletByUserIdentifierAndParticipantName(walletId, appName);
 
     if (!response) {
         throw new ApiError(404, 'La billetera no existe', { message: 'El wallet con el id especificado no existe' });

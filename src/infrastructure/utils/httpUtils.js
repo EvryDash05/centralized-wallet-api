@@ -24,9 +24,9 @@ export function sendResponse(res, result) {
 /**
  * buildErrorRequest: recibe el resultado de zod.safeParse y lanza ApiError
  */
-/* export function buildErrorRequest(zodParseResult) {
+export function buildErrorRequest(zodParseResult) {
     if (zodParseResult.success) return;
     console.log(zodParseResult.error.issues);
     const issues = zodParseResult.error.issues.map(i => ({ atribute: i.path[0], message: i.message }));
     throw new ApiError(400, 'Invalid input', issues);
-} */
+}

@@ -10,3 +10,18 @@ export const REGISTER_WALLET = `
             VALUES ($1, $2, $3, $4)
             RETURNING wallet_uuid, user_identifier, user_name, created_at;
 `
+
+export const FIND_WALLETE_BY_USER_IDENTIFIER_AND_PARTICIPANT_NAME = `
+    SELECT 
+        w.wallet_uuid,
+        w.user_identifier,
+        w.internal_wallet_id,
+        w.user_name,
+        p.app_name,
+        p.webhook_url,
+        p.token
+        FROM wallets w
+        JOIN participants p ON w.participant_id = p.id
+        WHERE w.user_identifier = $1
+    AND p.app_name = $2;             
+`
