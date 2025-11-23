@@ -6,7 +6,7 @@ export async function registerWallet(params) {
         params.userIdentifier,
         params.internalWalletId,
         params.userName,
-        params.participantId
+        params.participantId === 'LUCA' ? 'db41c15f-e4df-4647-87c9-eb55d6578774' : 'd9418541-f25d-4282-a21d-41a5f02a2272'
     ]);
 
     return response.rows[0];

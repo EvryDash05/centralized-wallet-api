@@ -15,6 +15,7 @@ export async function createWalletController(req, res) {
 export async function getWalletByIdentifierUser(req, res) {
     try {
         const { id, appName } = req.params;
+        console.log('id:', id, ' appName:', appName);
         const response = await getWalletById(id, appName);
         sendResponse(res, response);
     } catch (error) {
