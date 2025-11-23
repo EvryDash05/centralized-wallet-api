@@ -14,7 +14,7 @@ const swaggerSpec = swaggerJSDoc(options);
 
 app.use(express.json());
 app.use(cors({
-    origin: ['*'],
+    origin: ['https://billetera-production.up.railway.app', 'https://auth-microservice-vxcl.onrender.com', 'https://fronbilletera-digital-production.up.railway.app'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-wallet-token'],
 }));
