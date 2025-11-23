@@ -5,14 +5,19 @@ import walletRouter from './infrastructure/routes/wallet.routes.js';
 import swaggerJSDoc from 'swagger-jsdoc';
 import { options } from '../lib/swaggerConfig.js';
 import swaggerUi from 'swagger-ui-express';
+import cors from 'cors';
 
 configDotenv();
 const app = express();
 
-
 const swaggerSpec = swaggerJSDoc(options);
 
 app.use(express.json());
+app.use(cors({
+    origin: ['*'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-wallet-token'],
+}));
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 

@@ -16,8 +16,5 @@ export const sendNewTransferSchema = z.object({
         .positive("El valor debe ser mayor que 0")
         .refine(val => Number(val.toFixed(2)) === val, {
             message: "El valor debe tener como máximo 2 decimales"
-        }),
-    description: z.string()
-        .min(5, "La descripción debe tener mínimo 5 caracteres")
-        .max(100, "La descripción debe tener máximo 100 caracteres")
+        })
 });
