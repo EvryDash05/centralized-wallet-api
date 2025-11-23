@@ -3,5 +3,10 @@ export const PARTICIPANTS_QUERIES = {
         SELECT *
         FROM participants
         WHERE token = $1
+    `,
+    FIND_PARTICIPANT_BY_APP_NAME: `
+        SELECT *
+        FROM participants
+        WHERE app_name = $1
     `
 }
