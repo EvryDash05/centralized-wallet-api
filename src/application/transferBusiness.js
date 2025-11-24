@@ -29,7 +29,7 @@ export async function sendTransfer(req) {
             walletId: recipientWallet.internal_wallet_id, // El id de la billetera del destinatario
             amount,
             externalTransactionId: externalTransactionId,
-            counterpartyId: issuingWallet.internal_wallet_id // El id de la billetera emisor
+            counterpartyId: `PIXEL-MONEY_${recipientWallet.user_name}` // El id de la billetera emisor
         })
     } else if (app_name === 'PIXEL MONEY') {
         console.log('Enviando a Pixel Money')
