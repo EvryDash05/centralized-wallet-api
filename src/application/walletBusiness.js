@@ -36,7 +36,7 @@ export async function getWalletById(walletId, appName) {
 export async function getAllWalletsByUserIdentifier(userIdentifier) {
     const response = await findAllWalletsByUserIdentifier(userIdentifier);
 
-    if (response.lenght === 0) {
+    if (!response) {
         throw new ApiError(404, 'No se encontraron billeteras', { message: 'El usuario no tiene billeteras registradas' });
     }
 
