@@ -24,13 +24,15 @@ export async function sendTransfer(req) {
     const { webhook_url, token, app_name } = participant;
 
     if (app_name === 'LUCA') {
+        console.log('Enviando a Luca')
         response = await fetchLucaWebhook(webhook_url, token, {
-            walletId: issuingWallet.internal_wallet_id,
+            walletId: recipientWallet.internal_wallet_id, // El id de la billetera del destinatario
             amount,
             externalTransactionId: externalTransactionId,
-            counterpartyId: recipientWallet.internal_wallet_id
+            counterpartyId: issuingWallet.internal_wallet_id // El id de la billetera emisor
         })
     } else if (app_name === 'PIXEL MONEY') {
+        console.log('Enviando a Pixel Money')
         response = await fetchPixelMoneyWebhook(webhook_url, token, {
             internalWalletId: recipientWallet.internal_wallet_id,
             amount,
@@ -56,6 +58,7 @@ export async function sendTransfer(req) {
 
 async function fetchLucaWebhook(webhookUrl, token, data) {
     const { walletId, amount, externalTransactionId, counterpartyId } = data;
+    console.log('fetchLucaWebhook data: ', data);
     return await fetch(webhookUrl, {
         method: 'POST',
         headers: {
