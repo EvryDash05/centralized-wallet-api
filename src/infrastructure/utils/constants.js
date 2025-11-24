@@ -3,4 +3,4 @@ import { configDotenv } from "dotenv";
 configDotenv();
 export const ALLOWED_APP_NAMES = ["LUCA", "PIXEL MONEY"];
 export const API_DOCS_URL = process.env.ENVIRONMENT === 'development' ? `http://localhost:${process.env.PORT}/api-docs` : 'https://centralized-wallet-api-production.up.railway.app/api-docs';
-export const BASE_URL = process.env.ENVIRONMENT === 'development' ? `http://localhost:${process.env.PORT}` : 'https://centralized-wallet-api-production.up.railway.app/api/v1';
+export const BASE_URL = process.env.ENVIRONMENT === 'development' ? `http://localhost:${process.env.PORT}/api/v1` : 'https://centralized-wallet-api-production.up.railway.app/api/v1';

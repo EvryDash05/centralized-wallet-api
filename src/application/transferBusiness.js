@@ -3,10 +3,11 @@ import { findParticipantByAppName } from "../infrastructure/repository/participa
 import { findWalletByUserIdentifierAndParticipantName } from "../infrastructure/repository/walletRepository.js";
 
 export async function sendTransfer(req) {
-    const { toIdentifier, toAppName, amount, externalTransactionId } = req.body;
+    const { toIdentifier, toAppName, amount, externalTransactionId, fromIdentifier } = req.body;
     let response;
     const recipientWallet = await findWalletByUserIdentifierAndParticipantName(toIdentifier, toAppName);
     const participant = await findParticipantByAppName(toAppName);
+    const issuingWallet = await findWalletByUserIdentifierAndParticipantName(fromIdentifier, toAppName === 'LUCA' ? 'PIXEL MONEY' : 'LUCA');
 
     if (!participant) {
         throw new ApiError(404, 'Participante no encontrado', [
@@ -24,17 +25,19 @@ export async function sendTransfer(req) {
 
     if (app_name === 'LUCA') {
         response = await fetchLucaWebhook(webhook_url, token, {
-            walletId: recipientWallet.internal_wallet_id,
+            walletId: issuingWallet.internal_wallet_id,
             amount,
             externalTransactionId: externalTransactionId,
             counterpartyId: recipientWallet.internal_wallet_id
         })
     } else if (app_name === 'PIXEL MONEY') {
-        /* response = await fetchLucaWebhook(webhook_url, token, {
-            walletId: recipientWallet.internal_wallet_id,
+        console.log('issuingWallet', issuingWallet);
+        response = await fetchPixelMoneyWebhook(webhook_url, token, {
+            internalWalletId: recipientWallet.internal_wallet_id,
             amount,
-            counterpartyId: recipientWallet.internal_wallet_id
-        }) */
+            transactionId: externalTransactionId,
+            userName: issuingWallet ? issuingWallet.user_name : 'Unknown'
+        })
     }
 
     if (!response.ok) {
@@ -61,6 +64,25 @@ async function fetchLucaWebhook(webhookUrl, token, data) {
             externalTransactionId: externalTransactionId,
             counterpartyId: counterpartyId,
             currency: 'SOL'
+        })
+    });
+}
+
+async function fetchPixelMoneyWebhook(webhookUrl, token, data) {
+    const { internalWalletId, amount, transactionId, userName } = data;
+    console.log('fetchPixelMoneyWebhook data: ', data);
+    return await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+            'x-wallet-token': token,
+        },
+        body: JSON.stringify({
+            internalWalletId: internalWalletId,
+            monto: amount,
+            centralTransactionId: transactionId,
+            fromAppName: 'LUCA',
+            fromUserName: userName,
+            description: 'Descripción de la transferencia',
         })
     });
 }
