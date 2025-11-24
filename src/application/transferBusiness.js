@@ -21,6 +21,12 @@ export async function sendTransfer(req) {
         ]);
     }
 
+    if (!issuingWallet) {
+        throw new ApiError(404, 'Billetera emisora no encontrada', [
+            { atribute: 'fromIdentifier', message: `No se encontró una billetera emisora para el usuario ${fromIdentifier} en la aplicación contraparte` }
+        ]);
+    }
+
     const { webhook_url, token, app_name } = participant;
 
     if (app_name === 'LUCA') {
