@@ -31,7 +31,6 @@ export async function sendTransfer(req) {
             counterpartyId: recipientWallet.internal_wallet_id
         })
     } else if (app_name === 'PIXEL MONEY') {
-        console.log('issuingWallet', issuingWallet);
         response = await fetchPixelMoneyWebhook(webhook_url, token, {
             internalWalletId: recipientWallet.internal_wallet_id,
             amount,
@@ -47,6 +46,11 @@ export async function sendTransfer(req) {
     return {
         code: 200,
         message: 'Transferencia enviada exitosamente',
+        data: {
+            userName: recipientWallet.user_name,
+            toAppName,
+            phone: recipientWallet.user_identifier,
+        }
     }
 }
 
